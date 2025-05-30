@@ -27,11 +27,13 @@ class LauncherActivity : AppCompatActivity() {
             // methana function akakin check karanawa login welada inne kiyala aken login wela innawanm
             // true return wenawa login wela naththan false return wenawa
 
-            val isLoggedIn = checkUserLoginStatus()
-
+            val isLoggedIn = checkUserLoginStatus() // mekata anawane tru hari false hari
+            // a ana true hari false aka hari thama me check karala tinne
             if (isLoggedIn) {
-                startActivity(Intent(this, AddProductActivity::class.java))
+                // true awoth me Activity akata yano
+                startActivity(Intent(this, Home_activity::class.java))
             } else {
+                // false awoata
                 startActivity(Intent(this, MainActivity::class.java))
             }
 
