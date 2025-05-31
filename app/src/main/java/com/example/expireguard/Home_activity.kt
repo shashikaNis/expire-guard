@@ -1,7 +1,6 @@
 package com.example.expireguard
 
 import android.content.Intent
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -19,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 class Home_activity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var btnAddProducts: Button
     private lateinit var productList: ArrayList<Product>
     private var db = Firebase.firestore
 
@@ -30,6 +30,11 @@ class Home_activity : AppCompatActivity() {
 
         val btnLogout: Button = findViewById(R.id.btn_logout)
         recyclerView = findViewById(R.id.rcv_product_list)
+        btnAddProducts = findViewById(R.id.btn_add_product)
+        btnAddProducts.setOnClickListener {
+            val intent = Intent(this, AddProductActivity::class.java)
+            startActivity(intent)
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
