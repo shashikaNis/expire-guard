@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -44,8 +45,8 @@ class LauncherActivity : AppCompatActivity() {
     }
     private fun checkUserLoginStatus(): Boolean {
         // meka thama login welada inne kiyala check karana function aka
-        // api thama login aka hadala nathi nisa man danata meke false kiyana aka retrun karala tiyanawa
-        //passe meka api database akath akka check karanna hadanna one
-        return false
+        // api Firebase Authentication use karala thama login status aka check karanne
+        // FirebaseAuth.getInstance().currentUser null nemei nam, user kenek login wela innawa
+        return FirebaseAuth.getInstance().currentUser != null
     }
 }
