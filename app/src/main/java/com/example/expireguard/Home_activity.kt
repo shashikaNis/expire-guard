@@ -41,21 +41,29 @@ class Home_activity : AppCompatActivity() {
         productList = arrayListOf()
 
         db = FirebaseFirestore.getInstance()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        db.collection("users").document(userId).collection("products")
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("Firestore error", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
 
-        db.collection("product").get()
-            .addOnSuccessListener {
-                if (!it.isEmpty) {
-                    for (data in it.documents) {
-                        val product: Product? = data.toObject(Product::class.java)
+                productList.clear() // Clear the list before adding new data
+                if (snapshots != null && !snapshots.isEmpty) {
+                    for (doc in snapshots.documents) {
+                        val product = doc.toObject(Product::class.java)
                         if (product != null) {
                             productList.add(product)
                         }
                     }
-                    recyclerView.adapter = ProductAdapter(productList)
+                    // Update the RecyclerView adapter
+                    if (recyclerView.adapter == null) {
+                        recyclerView.adapter = ProductAdapter(productList)
+                    } else {
+                        recyclerView.adapter?.notifyDataSetChanged()
+                    }
                 }
-            }
-            .addOnFailureListener{
-                Log.e("Firestore error", it.message.toString())
             }
 
 

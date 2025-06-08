@@ -37,8 +37,8 @@ class ProductAdapter(private val productList: ArrayList<Product>) :
 
             // Format the Timestamp to a readable date string
             // Handle null expireAt if you made it nullable in your Product data class
-            if (product.expireAt != null) { // Or just product.expireAt if it's non-nullable
-                val expirationDate = product.expireAt.toDate() // Convert Timestamp to java.util.Date
+            if (product.expiryDate != null) { // Or just product.expireAt if it's non-nullable
+                val expirationDate = product.expiryDate.toDate() // Convert Timestamp to java.util.Date
                 productExpirationTextView.text = "Expires: ${dateFormat.format(expirationDate)}"
             } else {
                 productExpirationTextView.text = "Expires: N/A"

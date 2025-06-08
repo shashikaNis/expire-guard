@@ -1,5 +1,6 @@
 package com.example.expireguard
 
+import android.util.Log
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -27,20 +28,22 @@ class AddProductActivity : AppCompatActivity() {
         }
 
         binding.btnAdd.setOnClickListener {
+            Log.d("AddProductActivity", "Add button clicked")
             addProductToFirestore()
         }
 
         binding.btnAddProductBack.setOnClickListener {
+            Log.d("AddProductActivity", "Back button clicked")
             finish() // Go back to the previous activity
         }
     }
 
     private fun addProductToFirestore() {
         val productName = binding.etProductName.text.toString().trim()
-        val expiryDateString = binding.etExpireDate.text.toString().trim() // Assuming YYYY-MM-DD format for now
+        val expiryDateString = binding.etExpireDate.dayOfMonth // Assuming YYYY-MM-DD format for now
         val qty = binding.etQty.text.toString().trim()
 
-        if (productName.isEmpty() || expiryDateString.isEmpty()) {
+        if (productName.isEmpty() ) {
             Toast.makeText(this, "Product name and expiry date cannot be empty", Toast.LENGTH_SHORT).show()
             return
         }
