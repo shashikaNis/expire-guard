@@ -19,6 +19,7 @@ class Home_activity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnAddProducts: Button
+    private lateinit var btnSettings: Button
     private lateinit var productList: ArrayList<Product>
     private var db = Firebase.firestore
 
@@ -29,10 +30,16 @@ class Home_activity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val btnLogout: Button = findViewById(R.id.btn_logout)
+        btnSettings = findViewById(R.id.btn_notification)
         recyclerView = findViewById(R.id.rcv_product_list)
         btnAddProducts = findViewById(R.id.btn_add_product)
         btnAddProducts.setOnClickListener {
             val intent = Intent(this, AddProductActivity::class.java)
+            startActivity(intent)
+        }
+        btnSettings.setOnClickListener {
+            Log.d("Settings", "Settings button clicked")
+            val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
         recyclerView.layoutManager = LinearLayoutManager(this)

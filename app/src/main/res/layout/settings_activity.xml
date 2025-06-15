@@ -1,12 +1,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
+    android:id="@+id/settings_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/chk_setting_vibrate"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/chk_setting_ringtone"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
@@ -25,7 +25,7 @@
         android:text="Ringingtone"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox4" />
+        app:layout_constraintTop_toBottomOf="@id/chk_setting_vibrate" />
 
     <TextView
         android:id="@+id/txt_time"
@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox5" />
+        app:layout_constraintTop_toBottomOf="@+id/chk_setting_ringtone" />
 
     <CheckBox
         android:id="@+id/chk_morning"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_time" />
 
     <CheckBox
-        android:id="@+id/afternoon"
+        android:id="@+id/chk_afternoon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
@@ -77,7 +77,7 @@
         android:text="Evening"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/afternoon" />
+        app:layout_constraintTop_toBottomOf="@+id/chk_afternoon" />
 
     <CheckBox
         android:id="@+id/chk_night"
@@ -87,7 +87,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="232dp"
         android:text="Night"
-        android:textSize="16sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chk_evening" />
