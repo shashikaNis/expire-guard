@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,7 +29,12 @@ class MainActivity : AppCompatActivity() {
         val etUserName: EditText = findViewById(R.id.et_user_name)
         val etPassword: EditText = findViewById(R.id.et_password)
         val btnLogin: Button = findViewById(R.id.btn_login)
+        val txtDontHaveAccount: TextView = findViewById(R.id.txtDontHaveAccount)
 
+        txtDontHaveAccount.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
         btnLogin.setOnClickListener {
             val email = etUserName.text.toString()
             val password = etPassword.text.toString()
@@ -59,8 +65,6 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED -> {
                 setNotificationToken()
-                startActivity(Intent(this, Home_activity::class.java))
-                finish()
             }
             else -> {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -83,9 +87,12 @@ class MainActivity : AppCompatActivity() {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             if (userId != null && token != null) {
                 val userRef = FirebaseFirestore.getInstance().collection("users").document(userId)
-                userRef.update("fcmToken", token)
+                userRef.set(mapOf("fcmToken" to token))
                     .addOnSuccessListener {
                         Log.d("Firestore", "FCM token updated successfully")
+                        Toast.makeText(this, "FCM token updated successfully", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, Home_activity::class.java))
+                        finish()
                     }
                     .addOnFailureListener { e ->
                         Log.w("Firestore", "Error updating FCM token", e)

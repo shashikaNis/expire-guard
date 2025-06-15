@@ -59,9 +59,13 @@ class Home_activity : AppCompatActivity() {
                 productList.clear() // Clear the list before adding new data
                 if (snapshots != null && !snapshots.isEmpty) {
                     for (doc in snapshots.documents) {
-                        val product = doc.toObject(Product::class.java)
-                        if (product != null) {
-                            productList.add(product)
+                        try {
+                            val product = doc.toObject(Product::class.java)
+                            if (product != null) {
+                                productList.add(product)
+                            }
+                        } catch (ex: Exception) {
+                            Log.e("Firestore error", "Error parsing product data: ${ex.message}")
                         }
                     }
                     // Update the RecyclerView adapter

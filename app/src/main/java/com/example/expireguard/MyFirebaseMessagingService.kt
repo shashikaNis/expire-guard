@@ -4,7 +4,10 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.SharedPreferences
+import android.media.RingtoneManager
 import android.content.Intent
+import android.media.AudioManager.STREAM_VOICE_CALL
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -88,18 +91,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param messageBody FCM message body received.
      */
     private fun sendNotification(title: String?, messageBody: String?) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, Home_activity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
 
-        val channelId = "fcm_default_channel"
+        val sharedPreferences: SharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val playRingtone = sharedPreferences.getBoolean("ringtone", true)
+        val vibrate = sharedPreferences.getBoolean("vibrate", true)
+
+        Log.d(TAG, "Play ringtone: $playRingtone, Vibrate: $vibrate")
+
+        val channelId = "expireguard_channel_${if (playRingtone) "sound" else "mute"}_${if (vibrate) "vib" else "novib"}"
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.mipmap.ic_launcher) // Ensure you have this icon
             .setContentTitle(title ?: "FCM Message")
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        if (playRingtone) {
+            val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+            notificationBuilder.setSound(defaultSoundUri)
+        } else {
+            notificationBuilder.setSound(null)
+        }
+
+        if (vibrate) {
+            // Vibrate for 500 milliseconds
+            notificationBuilder.setVibrate(longArrayOf(0, 500, 500, 500))
+        }
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -107,7 +129,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId,
                 "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    enableVibration(vibrate)
+                if (vibrate) {
+                    vibrationPattern = longArrayOf(0, 500, 500, 500)
+                }
+                if (!playRingtone) {
+                    setSound(null, null)
+                } }
             notificationManager.createNotificationChannel(channel)
         }
 
