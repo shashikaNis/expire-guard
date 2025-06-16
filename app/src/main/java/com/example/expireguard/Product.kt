@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp
 import java.util.Date
 
 data class Product(
+    var id: String = "",
     val name: String = "",
     val expiryDate: Timestamp = Timestamp.now()
 ) {

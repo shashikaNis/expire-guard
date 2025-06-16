@@ -61,6 +61,7 @@ class Home_activity : AppCompatActivity() {
                     for (doc in snapshots.documents) {
                         try {
                             val product = doc.toObject(Product::class.java)
+                            product?.id = doc.id
                             if (product != null) {
                                 productList.add(product)
                             }

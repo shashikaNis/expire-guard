@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Calendar
 import java.util.Date
 import com.example.expireguard.databinding.ActivityAddProductBinding
 
@@ -40,10 +41,15 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun addProductToFirestore() {
         val productName = binding.etProductName.text.toString().trim()
-        val expiryDateString = binding.etExpireDate.dayOfMonth // Assuming YYYY-MM-DD format for now
+        val day = binding.etExpireDate.dayOfMonth
+        val month = binding.etExpireDate.month
+        val year = binding.etExpireDate.year
         val qty = binding.etQty.text.toString().trim()
 
-        if (productName.isEmpty() ) {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
+        val expiryDate = calendar.time
+        if (productName.isEmpty()) {
             Toast.makeText(this, "Product name and expiry date cannot be empty", Toast.LENGTH_SHORT).show()
             return
         }
@@ -53,7 +59,7 @@ class AddProductActivity : AppCompatActivity() {
         // For simplicity, directly using String for expiryDate. Consider DatePicker and proper date handling.
         val product = hashMapOf(
             "name" to productName,
-            "expiryDate" to expiryDateString, // Store as String, or convert to Timestamp
+            "expiryDate" to expiryDate,
             "qty" to qty,
             "addedDate" to Date() // Timestamp of when the product was added
         )
