@@ -40,6 +40,9 @@ class EditProductActivity : AppCompatActivity() {
         binding.etProductExpiry.setOnClickListener {
             showDatePicker()
         }
+        binding.btnEditProductBack.setOnClickListener {
+            finish()
+        }
 
         binding.btnSaveProduct.setOnClickListener {
             val newName = binding.etProductName.text.toString()
